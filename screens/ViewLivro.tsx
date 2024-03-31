@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
 
 export default function ViewLivro({ route }) {
@@ -20,16 +20,62 @@ export default function ViewLivro({ route }) {
   };
 
   return (
-    <View>
+    <ScrollView contentContainerStyle={styles.container}>
       {livro && (
         <>
-          <Text>{livro.titulo}</Text>
-          <Text>{livro.ano}</Text>          
-          <Text>{livro.editora}</Text>
-          <Text>{livro.autorPrincipal }</Text>
-          <Image source={{ uri: livro.imagem}} style={{ width: 100, height: 100 }} />
+          <Image source={{ uri: `https://bibliotecaetecmaua.azurewebsites.net/Content/Images/${livro.imagem}` }}
+ style={styles.imagem} />
+          <View style={styles.infoContainer}>
+      
+
+            <Text style={styles.titulo}>{livro.titulo}</Text>
+            <Text style={styles.autor}>Autor: {livro.autorPrincipal}</Text>
+            <Text style={styles.editora}>Editora: {livro.editora}</Text>
+            <Text style={styles.ano}>Ano: {livro.ano}</Text>
+          </View>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  imagem: {
+    width: 300,
+    height: 400,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  infoContainer: {
+    alignItems: 'center',
+  },
+  titulo: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  
+  autor: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  editora: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  imagemLivro: {
+    aspectRatio: 3 / 4,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+},
+  ano: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+});

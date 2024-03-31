@@ -1,33 +1,100 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 
-function AddLivro({ navigation }) {
+const AddLivro = ({ navigation }) => {
   const [titulo, setTitulo] = useState('');
   const [ano, setAno] = useState('');
   const [autorPrincipal, setAutorPrincipal] = useState('');
   const [editora, setEditora] = useState('');
   const [imagem, setImagem] = useState('');
+  const [assuntos, setAssuntos] = useState('');
+  const [error, setError] = useState('');
 
   const addLivro = async () => {
+    if (!titulo || !autorPrincipal || !editora || !assuntos) {
+      setError("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
     try {
-      await axios.post('URL_DA_SUA_API/livros', { titulo, ano, autorPrincipal, editora, imagem });
+      await axios.post('https://bibliotecaetecmaua.azurewebsites.net/api/LivrosSedeApi', { titulo, ano, autorPrincipal, editora, imagem, assuntos });
       navigation.goBack();
     } catch (error) {
-      console.error("Erro ao adicionar produto:", error);
+      console.error("Erro ao adicionar livro:", error);
     }
   };
 
   return (
-    <View>
-      <TextInput placeholder="Titulo" value={titulo} onChangeText={setTitulo} />
-      <TextInput placeholder="Ano" value={ano} onChangeText={setAno} />
-      <TextInput placeholder="Autor" value={autorPrincipal} onChangeText={setAutorPrincipal} />
-      <TextInput placeholder="Editora" value={editora} onChangeText={setEditora} />
-      <TextInput placeholder="Imagem" value={imagem} onChangeText={setImagem} />
-      <Button title="Adicionar" onPress={addLivro} />
+    <View style={styles.container}>
+      <Text style={styles.title}>Insira as informações do livro:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Título *"
+        value={titulo}
+        onChangeText={setTitulo}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Ano"
+        value={ano}
+        onChangeText={setAno}
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Autor *"
+        value={autorPrincipal}
+        onChangeText={setAutorPrincipal}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Editora *"
+        value={editora}
+        onChangeText={setEditora}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="URL da Imagem"
+        value={imagem}
+        onChangeText={setImagem}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Assuntos *"
+        value={assuntos}
+        onChangeText={setAssuntos}
+      />
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+      <Button title="Adicionar Livro" onPress={addLivro} />
     </View>
   );
-  }
+};
 
-  export default AddLivro;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
+  },
+});
+
+export default AddLivro;

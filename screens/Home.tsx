@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, Dimensions } from "react-native";
 import axios from "axios";
 import LateralBar from "./LateralBar";
-
+import { Button } from "react-native-paper";
 const windowWidth = Dimensions.get('window').width;
 
 export default function Home({ navigation }) {
     const [livros, setLivros] = useState([]);
     const [assuntos, setAssuntos] = useState([]);
+    const [livrosExibidos, setLivrosExibidos] = useState([]);
+    const livrosPorPagina = 10; // Número de livros a serem exibidos por vez
 
     async function carregarLivros() {
         try {
@@ -16,6 +18,7 @@ export default function Home({ navigation }) {
                 livro.titulo && livro.autorPrincipal && livro.imagem && livro.assuntos
             ));
             setLivros(livrosFiltrados);
+            setLivrosExibidos(livrosFiltrados.slice(0, livrosPorPagina));
 
             const assuntos = livrosFiltrados.map(livro => livro.assuntos);
             const uniqueAssuntos = [...new Set(assuntos)];
@@ -29,22 +32,18 @@ export default function Home({ navigation }) {
         carregarLivros();
     }, []);
 
-    const agruparPorAssunto = (livros) => {
-        const livrosPorAssunto = {};
-        livros.forEach(livro => {
-            if (!livrosPorAssunto[livro.assuntos]) {
-                livrosPorAssunto[livro.assuntos] = [];
-            }
-            livrosPorAssunto[livro.assuntos].push(livro);
-        });
-        return livrosPorAssunto;
+    const handleMostrarMais = () => {
+        const novosLivrosExibidos = livros.slice(0, livrosExibidos.length + livrosPorPagina);
+        setLivrosExibidos(novosLivrosExibidos);
     };
 
     const renderGrupoLivros = ({ item }) => {
         return (
+          
             <View style={styles.grupoLivros}>
                 <View style={styles.faixaAssunto}>
                     <Text style={styles.tituloAssunto}>{item.assunto}</Text>
+                    
                 </View>
                 <FlatList
                     data={item.livros}
@@ -64,55 +63,63 @@ export default function Home({ navigation }) {
                     style={styles.imagemLivro}
                     resizeMode="cover"
                 />
-                <Text style={styles.tituloLivro}>{item.titulo}</Text>
+<Text style={styles.tituloLivro}>
+    {item.titulo.length > 20 ? `${item.titulo.substring(0, 20)}...` : item.titulo}
+</Text>
                 <Text style={styles.autorLivro}>{item.autorPrincipal}</Text>
             </View>
+            
         </TouchableOpacity>
+        
     );
 
-    const livrosAgrupados = agruparPorAssunto(livros);
-    const gruposLivros = Object.keys(livrosAgrupados).map(assunto => ({
-        assunto,
-        livros: livrosAgrupados[assunto],
-    }));
-
     return (
+        
         <View style={styles.container}>
-            <View style={styles.sidebar}>
-                <LateralBar navigation={navigation} routes={assuntos} />
-            </View>
-            <View style={styles.content}>
-                
-                <FlatList
-                    data={gruposLivros}
-                    renderItem={renderGrupoLivros}
-                    keyExtractor={(item) => item.assunto}
-                    contentContainerStyle={styles.flatList}
-                />
-            </View>
-        </View>
+    <View style={styles.sidebar}>
+        <LateralBar navigation={navigation} routes={assuntos} />
+    </View>
+    <View style={styles.content}>
+        <FlatList
+            data={livrosExibidos}
+            renderItem={renderLivro}
+            keyExtractor={(livro) => livro.id.toString()}
+            contentContainerStyle={styles.flatList}
+            numColumns={6} 
+        />
+
+        {livrosExibidos.length < livros.length && (
+ <Button mode="contained" onPress={handleMostrarMais}>
+ Mostrar Mais
+</Button>        )}
+    </View>
+</View>
+
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'column',
+        width: '100%',
     },
     sidebar: {
-        flex: 1,
-        backgroundColor: '#F5F5F6',
-        paddingTop: 20,
-        paddingLeft: 10,
+        
+        backgroundColor: '',
+       
     },
     content: {
         flex: 3,
-        backgroundColor: '#F5F5F6',
+        backgroundColor: 'black',
         padding: 10,
+        width: '100%',
     },
     addButton: {
         marginVertical: 10,
+        width: 10, 
     },
+    
     flatList: {
         flexGrow: 1,
     },
@@ -133,12 +140,14 @@ const styles = StyleSheet.create({
     },
     livroContainer: {
         flex: 1,
+        width: '100%', 
         margin: 5,
-        backgroundColor: '#FFF',
+        backgroundColor: '',
         borderRadius: 10,
         overflow: 'hidden',
         elevation: 9,
     },
+    
     imagemLivro: {
         width: windowWidth * 0.15,
         aspectRatio: 3 / 4,
@@ -151,11 +160,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingTop: 5,
         textAlign: 'center',
+        color: 'pink',
+        
     },
     autorLivro: {
         fontSize: 14,
         paddingHorizontal: 10,
         paddingBottom: 5,
         textAlign: 'center',
+        color: 'white',
+
     },
+    
 });

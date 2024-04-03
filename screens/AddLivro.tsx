@@ -28,6 +28,7 @@ const AddLivro = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Insira as informações do livro:</Text>
+      <View style={styles.Card}>
       <TextInput
         style={styles.input}
         placeholder="Título *"
@@ -67,6 +68,7 @@ const AddLivro = ({ navigation }) => {
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <Button title="Adicionar Livro" onPress={addLivro} />
+      </View>
     </View>
   );
 };
@@ -75,13 +77,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
+  },
+  Card: {
+      flex: 1,
+      padding: '10%',
+      backgroundColor: '',
+    
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    color: 'white',
+    
   },
   input: {
     height: 40,
@@ -90,9 +100,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     paddingHorizontal: 10,
+    color: 'white'
+
   },
   error: {
-    color: 'red',
+    color: 'orange',
     marginBottom: 10,
   },
 });

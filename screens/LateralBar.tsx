@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 20,
         paddingLeft: 10,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: 'black',
     },
     button: {
         marginBottom: 10,
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     },
     buttonAdd: {
         marginBottom: 10,
+        width:250,
     },
   
 });

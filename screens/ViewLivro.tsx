@@ -41,11 +41,15 @@ export default function ViewLivro({ route }) {
 
 const styles = StyleSheet.create({
   container: {
+    
     flexGrow: 1,
     alignItems: 'center',
     paddingVertical: 20,
+    backgroundColor: 'black',
   },
   imagem: {
+    marginTop: '5%',
+
     width: 300,
     height: 400,
     borderRadius: 10,
@@ -59,23 +63,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    color: 'pink'
   },
   
   autor: {
     fontSize: 18,
     marginBottom: 5,
+    color: 'white',
   },
   editora: {
     fontSize: 18,
     marginBottom: 5,
+    color: 'gray',
   },
   imagemLivro: {
     aspectRatio: 3 / 4,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+
 },
   ano: {
     fontSize: 18,
     marginBottom: 5,
+    color: 'gray',
+
   },
 });

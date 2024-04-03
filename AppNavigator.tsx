@@ -12,7 +12,7 @@ function AppNavigator(){
     return(
         <NavigationContainer>
             <Stack.Navigator initialRouteName="HomeScreen">
-                <Stack.Screen name="HomeScreen" component={Home} />
+                <Stack.Screen name="Biblioteca" component={Home} />
                 <Stack.Screen name="AddLivroScreen" component={AddLivro} />
                 <Stack.Screen name="ViewLivroScreen" component={ViewLivro} />
 

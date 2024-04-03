@@ -11,6 +11,7 @@ export default function Home({ navigation }) {
     const [livrosExibidos, setLivrosExibidos] = useState([]);
     const livrosPorPagina = 10; // Número de livros a serem exibidos por vez
 
+    
     async function carregarLivros() {
         try {
             const response = await axios.get("https://bibliotecaetecmaua.azurewebsites.net/api/LivrosSedeApi");
@@ -41,6 +42,7 @@ export default function Home({ navigation }) {
         return (
           
             <View style={styles.grupoLivros}>
+                
                 <View style={styles.faixaAssunto}>
                     <Text style={styles.tituloAssunto}>{item.assunto}</Text>
                     
@@ -49,7 +51,7 @@ export default function Home({ navigation }) {
                     data={item.livros}
                     renderItem={renderLivro}
                     keyExtractor={(livro) => livro.id.toString()}
-                    numColumns={5}
+                    numColumns={7}
                 />
             </View>
         );
@@ -76,8 +78,10 @@ export default function Home({ navigation }) {
     return (
         
         <View style={styles.container}>
+     <View style={styles.container}>
     <View style={styles.sidebar}>
         <LateralBar navigation={navigation} routes={assuntos} />
+    </View>
     </View>
     <View style={styles.content}>
         <FlatList
@@ -100,9 +104,11 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        backgroundColor: 'black',
+
         flexDirection: 'column',
         width: '100%',
+    
     },
     sidebar: {
         
@@ -112,8 +118,9 @@ const styles = StyleSheet.create({
     content: {
         flex: 3,
         backgroundColor: 'black',
-        padding: 10,
+        padding: 25,
         width: '100%',
+
     },
     addButton: {
         marginVertical: 10,

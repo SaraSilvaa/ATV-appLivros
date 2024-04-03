@@ -9,7 +9,11 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@expo/webpack-config": "^19.0.0",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.19",
     "@types/react": "~18.2.14",
